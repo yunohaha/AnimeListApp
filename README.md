@@ -39,10 +39,10 @@ Jikan API — это бесплатный REST API для получения д�
 ## Скриншоты
 
 ### Главный экран
-![Главный экран](screenshots\detail_screen1.png)
+![Главный экран](screenshots/detail_screen1.png)
 
 ### Поиск
-![Поиск](screenshots\detail_screen.png)
+![Поиск](screenshots/detail_screen.png)
 
 ### Деталка
-![Поиск](screenshots\detail_screen2.png)
+![Деталка](screenshots/detail_screen2.png)
