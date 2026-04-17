@@ -26,9 +26,9 @@ data class AnimeDto(
             id = mal_id,
             title = safeTitle,
             imageUrl = imageUrl,
-            episodes = episodes ?: 0,
-            rating = score ?: 0.0,
-            year = year ?: 0
+            episodes = episodes,
+            rating = score,
+            year = year
         )
     }
 }

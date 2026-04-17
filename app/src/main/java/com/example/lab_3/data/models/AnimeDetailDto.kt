@@ -33,10 +33,10 @@ data class AnimeDetailDto(
                     ?: images?.webp?.image_url
                     ?: "",
             synopsis = synopsis,
-            episodes = episodes ?: 0,
+            episodes = episodes,
             status = status,
-            rating = score ?: 0.0,
-            year = year ?: 0,
+            rating = score,
+            year = year,
             genres = genres?.map {it.name} ?: emptyList(),
             studios = studios?.map { it.name} ?: emptyList()
         )

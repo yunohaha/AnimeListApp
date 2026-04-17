@@ -11,4 +11,5 @@ data class AnimeListUiState(
     val hasMorePages: Boolean = true,
     val errorMessage: String? = null,
     val hasSearched: Boolean = false,
+    val isEmpty: Boolean = false
 )

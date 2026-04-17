@@ -21,7 +21,10 @@ object AnimeRoutes {
 }
 
 @Composable
-fun NavGraph() {
+fun NavGraph(
+    animeListViewModel: AnimeListViewModel,
+    animeDetailViewModel: AnimeDetailViewModel
+) {
     val navController = rememberNavController()
 
     NavHost(
@@ -29,15 +32,14 @@ fun NavGraph() {
         startDestination = AnimeRoutes.LIST_ROUTE
     ) {
         composable(AnimeRoutes.LIST_ROUTE) {
-            val viewModel: AnimeListViewModel = viewModel()
             AnimeListScreen(
-                uiState = viewModel.uiState,
-                onSearchChange = { query -> viewModel.onSearchQueryChange(query) },
+                uiState = animeListViewModel.uiState,
+                onSearchChange = { query -> animeListViewModel.onSearchQueryChange(query) },
                 onAnimeClick = { animeId ->
                     navController.navigate(AnimeRoutes.details(animeId))
                 },
-                onLoadMore = { viewModel.loadMore() },
-                onRetry = { viewModel.onRetry() }
+                onLoadMore = { animeListViewModel.loadMore() },
+                onRetry = { animeListViewModel.onRetry() }
             )
         }
 
@@ -53,16 +55,14 @@ fun NavGraph() {
             val animeId = backStackEntry.arguments?.getInt(AnimeRoutes.ANIME_ID_ARG)
                 ?: return@composable
 
-            val viewModel: AnimeDetailViewModel = viewModel()
-
             LaunchedEffect(animeId) {
-                viewModel.init(animeId)
+                animeDetailViewModel.init(animeId)
             }
 
             AnimeDetailScreen(
-                uiState = viewModel.uiState,
+                uiState = animeDetailViewModel.uiState,
                 onBack = { navController.popBackStack() },
-                onRetry = { viewModel.init(animeId) }
+                onRetry = { animeDetailViewModel.init(animeId) }
             )
         }
     }

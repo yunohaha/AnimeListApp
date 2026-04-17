@@ -126,25 +126,25 @@ fun AnimeListScreen(
                                             maxLines = 2
                                         )
 
-                                        anime.episodes?.takeIf { it > 0 }?.let {
+                                        anime.episodes?.let { episodes ->
                                             Text(
-                                                text = "Episodes: $it",
+                                                text = "Episodes: $episodes",
                                                 fontSize = 13.sp,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
                                         }
 
-                                        anime.rating?.takeIf { it > 0 }?.let {
+                                        anime.rating?.let { rating ->
                                             Text(
-                                                text = "Rating: ${String.format("%.1f", it)}/10",
+                                                text = "Rating: ${String.format("%.1f", rating)}/10",
                                                 fontSize = 13.sp,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
                                         }
 
-                                        anime.year?.takeIf { it > 0 }?.let {
+                                        anime.year?.let { year ->
                                             Text(
-                                                text = "Year: $it",
+                                                text = "Year: $year",
                                                 fontSize = 13.sp,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )

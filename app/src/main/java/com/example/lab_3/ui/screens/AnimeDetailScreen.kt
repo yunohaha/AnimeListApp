@@ -104,24 +104,23 @@ fun AnimeDetailScreen(
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text(
-                                text = "Status: ${anime.status}",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-
-                            Text(
-                                text = "Episodes: ${anime.episodes}",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-
-                            Text(
-                                text = "Rating: ${String.format("%.1f", anime.rating)}",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-
-                            if (anime.year != null && anime.year > 0) {
+                            anime.episodes?.let { episodes ->
                                 Text(
-                                    text = "Year: ${anime.year}",
+                                    text = "Episodes: $episodes",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+
+                            anime.rating?.let{ rating ->
+                                Text(
+                                    text = "Rating: ${String.format("%.1f", rating)}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+
+                            anime.year?.let { year ->
+                                Text(
+                                    text = "Year: $year",
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                             }
