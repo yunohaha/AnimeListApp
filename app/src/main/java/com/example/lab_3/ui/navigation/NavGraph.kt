@@ -2,6 +2,7 @@ package com.example.lab_3.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -22,8 +23,8 @@ object AnimeRoutes {
 
 @Composable
 fun NavGraph(
-    animeListViewModel: AnimeListViewModel,
-    animeDetailViewModel: AnimeDetailViewModel
+    animeListViewModel: AnimeListViewModel = hiltViewModel(),
+    animeDetailViewModel: AnimeDetailViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
 

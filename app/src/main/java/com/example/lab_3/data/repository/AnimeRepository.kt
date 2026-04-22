@@ -1,14 +1,21 @@
 package com.example.lab_3.data.repository
 
 import com.example.lab_3.data.network.JikanApi
-import com.example.lab_3.data.network.NetworkModule
 import com.example.lab_3.domain.models.Anime
 import com.example.lab_3.domain.models.AnimeDetail
+import javax.inject.Inject
 
-class AnimeRepository(
-    private val api: JikanApi = NetworkModule.api
-) {
-    suspend fun getAnimeList(page: Int = 1): List<Anime> {
+interface AnimeRepository {
+    suspend fun getAnimeList(page: Int = 1): List<Anime>
+    suspend fun searchAnime(query: String, page: Int = 1): List<Anime>
+    suspend fun getAnimeDetail(id: Int): AnimeDetail
+}
+
+class AnimeRepositoryImpl @Inject constructor(
+    private val api: JikanApi
+) : AnimeRepository {
+
+    override suspend fun getAnimeList(page: Int): List<Anime> {
         repeat(2) { attempt ->
             try {
                 val response = api.getAnimeList(page = page)
@@ -29,7 +36,7 @@ class AnimeRepository(
         return emptyList()
     }
 
-    suspend fun searchAnime(query: String, page: Int = 1): List<Anime> {
+    override suspend fun searchAnime(query: String, page: Int): List<Anime> {
         if (query.isBlank()) return emptyList()
         val response = api.searchAnime(query = query, page = page)
 
@@ -40,8 +47,8 @@ class AnimeRepository(
         return body.data.mapNotNull { it.toDomainOrNull() }
     }
 
-    suspend fun getAnimeDetail(id: Int): AnimeDetail {
-        repeat(2) {
+    override suspend fun getAnimeDetail(id: Int): AnimeDetail {  // ← добавить suspend
+        repeat(2) { attempt ->
             try {
                 val response = api.getAnimeDetail(id)
 
@@ -51,7 +58,7 @@ class AnimeRepository(
                 return response.body()?.data?.toDomainOrNull()
                     ?: throw Exception("Empty body")
             } catch (e: Exception) {
-                if (it == 1) throw e
+                if (attempt == 1) throw e
                 kotlinx.coroutines.delay(800)
             }
         }

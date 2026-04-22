@@ -7,9 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lab_3.data.repository.AnimeRepository
 import com.example.lab_3.ui.states.AnimeDetailUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AnimeDetailViewModel(
+@HiltViewModel
+class AnimeDetailViewModel @Inject constructor(
     private val repository: AnimeRepository
 ) : ViewModel() {
     var uiState by mutableStateOf(AnimeDetailUiState(isLoading = true))
