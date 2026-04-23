@@ -7,14 +7,7 @@
 
 ## API
 
-Проект использует **Jikan API**  
-https://api.jikan.moe/v4/
-
----
-
-## API
-
-**Jikan API** (非公式 MyAnimeList API)  
+**Jikan API**  
 - Документация: https://docs.api.jikan.moe/
 
 ---
