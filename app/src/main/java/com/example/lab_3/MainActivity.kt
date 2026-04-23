@@ -27,10 +27,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val animeListViewModel: AnimeListViewModel = hiltViewModel()
                     val animeDetailViewModel: AnimeDetailViewModel = hiltViewModel()
-                    NavGraph(
-                        animeListViewModel = animeListViewModel,
-                        animeDetailViewModel = animeDetailViewModel
-                    )
+                    NavGraph()
                 }
             }
         }

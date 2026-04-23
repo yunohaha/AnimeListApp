@@ -6,5 +6,6 @@ data class Anime(
     val imageUrl: String? = null,
     val episodes: Int?,
     val rating: Double?,
-    val year: Int?
+    val year: Int?,
+    val isFavourite: Boolean = false
 )

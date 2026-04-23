@@ -22,12 +22,11 @@ object AnimeRoutes {
 }
 
 @Composable
-fun NavGraph(
-    animeListViewModel: AnimeListViewModel = hiltViewModel(),
-    animeDetailViewModel: AnimeDetailViewModel = hiltViewModel()
-) {
+fun NavGraph(){
     val navController = rememberNavController()
 
+    val animeListViewModel: AnimeListViewModel = hiltViewModel()
+    val animeDetailViewModel: AnimeDetailViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = AnimeRoutes.LIST_ROUTE
@@ -35,11 +34,11 @@ fun NavGraph(
         composable(AnimeRoutes.LIST_ROUTE) {
             AnimeListScreen(
                 uiState = animeListViewModel.uiState,
-                onSearchChange = { query -> animeListViewModel.onSearchQueryChange(query) },
+                onSearchChange = animeListViewModel::onSearchQueryChange,
                 onAnimeClick = { animeId ->
                     navController.navigate(AnimeRoutes.details(animeId))
                 },
-                onLoadMore = { animeListViewModel.loadMore() },
+                onFavouriteClick = animeListViewModel::onFavouriteClick,
                 onRetry = { animeListViewModel.onRetry() }
             )
         }
@@ -52,7 +51,6 @@ fun NavGraph(
                 }
             )
         ) { backStackEntry ->
-
             val animeId = backStackEntry.arguments?.getInt(AnimeRoutes.ANIME_ID_ARG)
                 ?: return@composable
 
