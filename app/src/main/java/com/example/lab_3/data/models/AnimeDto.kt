@@ -2,6 +2,7 @@ package com.example.lab_3.data.models
 
 import com.example.lab_3.domain.models.Anime
 
+
 data class AnimeResponse(
     val data: List<AnimeDto>,
     val pagination: Pagination
@@ -20,7 +21,6 @@ data class AnimeDto(
     fun toDomainOrNull(): Anime?{
        val safeTitle = title.takeIf {it.isNotBlank() } ?: return null
 
-        android.util.Log.d("AnimeImage", "Title: $safeTitle, Image URL: $imageUrl")
 
         return Anime(
             id = mal_id,

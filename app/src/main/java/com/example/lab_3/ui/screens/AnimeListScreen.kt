@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,14 +44,7 @@ fun AnimeListScreen(
                 label = { Text("Search by title") },
                 singleLine = true
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            uiState.errorMessage?.let {
-                Text("Error: $it", color = MaterialTheme.colorScheme.error)
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
+            Spacer(modifier = Modifier.height(12.dp))
             when {
                 uiState.isLoading -> {
                     Box(

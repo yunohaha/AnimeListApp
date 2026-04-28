@@ -26,7 +26,6 @@ fun NavGraph(){
     val navController = rememberNavController()
 
     val animeListViewModel: AnimeListViewModel = hiltViewModel()
-    val animeDetailViewModel: AnimeDetailViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = AnimeRoutes.LIST_ROUTE
@@ -51,17 +50,18 @@ fun NavGraph(){
                 }
             )
         ) { backStackEntry ->
+            val animeDetailViewModel: AnimeDetailViewModel = hiltViewModel()
             val animeId = backStackEntry.arguments?.getInt(AnimeRoutes.ANIME_ID_ARG)
                 ?: return@composable
 
             LaunchedEffect(animeId) {
-                animeDetailViewModel.init(animeId)
+                animeDetailViewModel.load(animeId)
             }
 
             AnimeDetailScreen(
                 uiState = animeDetailViewModel.uiState,
                 onBack = { navController.popBackStack() },
-                onRetry = { animeDetailViewModel.init(animeId) }
+                onRetry = { animeDetailViewModel.load(animeId) }
             )
         }
     }

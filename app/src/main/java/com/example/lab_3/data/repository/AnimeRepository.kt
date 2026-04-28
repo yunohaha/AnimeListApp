@@ -59,13 +59,25 @@ class AnimeRepositoryImpl @Inject constructor(
 
     override suspend fun searchAnime(query: String, page: Int): List<Anime> {
         if (query.isBlank()) return emptyList()
-        val response = api.searchAnime(query = query, page = page)
 
-        if (!response.isSuccessful) {
-            throw Exception("HTTP ${response.code()}")
+        repeat(2) { attempt ->
+            try {
+                val response = api.searchAnime(query = query, page = page)
+
+                if (!response.isSuccessful) {
+                    if (response.code() == 429 && attempt == 0) {
+                        kotlinx.coroutines.delay(1000)
+                        return@repeat
+                    }
+                    throw Exception("HTTP ${response.code()}")
+                }
+                val body = response.body() ?: throw Exception("Empty body")
+                return body.data.mapNotNull { it.toDomainOrNull() }
+            } catch (e: Exception) {
+                if (attempt == 1) throw e
+            }
         }
-        val body = response.body() ?: throw Exception("Empty body")
-        return body.data.mapNotNull { it.toDomainOrNull() }
+        return emptyList()
     }
 
     override suspend fun getAnimeDetail(id: Int): AnimeDetail {

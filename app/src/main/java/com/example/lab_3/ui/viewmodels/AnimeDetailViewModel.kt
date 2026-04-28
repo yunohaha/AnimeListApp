@@ -18,24 +18,12 @@ class AnimeDetailViewModel @Inject constructor(
     var uiState by mutableStateOf(AnimeDetailUiState(isLoading = true))
     private set
 
-    private var animeId: Int = -1
-
-    fun init(id: Int) {
-            animeId = id
-            loadAnimeDetail()
-    }
-
-    private fun loadAnimeDetail() {
+    fun load(animeId: Int) {
         viewModelScope.launch {
             uiState = uiState.copy(isLoading = true, errorMessage = null)
-
             try {
                 val detail = repository.getAnimeDetail(animeId)
-
-                uiState = uiState.copy(
-                    animeDetail = detail,
-                    isLoading = false
-                )
+                uiState = uiState.copy(animeDetail = detail, isLoading = false)
             } catch (e: Exception) {
                 uiState = uiState.copy(
                     isLoading = false,
