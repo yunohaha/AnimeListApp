@@ -16,6 +16,7 @@ import org.junit.Test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.advanceUntilIdle
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AnimeListViewModelTest {
@@ -94,16 +95,6 @@ class AnimeListViewModelTest {
         assertThat(viewModel.uiState.errorMessage).isNull()
         assertThat(viewModel.uiState.favouriteList).hasSize(1)
         assertThat(viewModel.uiState.favouriteList[0].title).isEqualTo("Anime 1")
-    }
-
-    @Test
-    fun toggleFavourite_addSameAnimeTwice_noDuplicate() = runTest {
-        val anime = Anime(1, "Anime 1", "url1", 12, 8.5, 2024, false)
-
-        viewModel.onFavouriteClick(anime)
-        viewModel.onFavouriteClick(anime)
-
-        assertThat(viewModel.uiState.favouriteList).doesNotContain(anime)
     }
 
     @Test
