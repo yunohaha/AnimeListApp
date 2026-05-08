@@ -6,7 +6,6 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -14,9 +13,9 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import com.google.common.truth.Truth.assertThat
+import io.mockk.coVerify
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
-import kotlinx.coroutines.test.advanceUntilIdle
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AnimeListViewModelTest {
@@ -75,27 +74,34 @@ class AnimeListViewModelTest {
         assertThat(viewModel.uiState.errorMessage).contains("Network error")
     }
 
+
     @Test
     fun retry_afterError_loadsDataAgain() = runTest {
-        coEvery { repository.getAnimeList(page = 1) } throws Exception("Network error")
-        coEvery { repository.getFavourites() } returns emptyList()
 
+        coEvery { repository.getAnimeList(page = 1) }.throws(Exception("Network error"))
+
+        val fakeAnimeList = listOf(
+            Anime(1, "Anime 1", "url1", 12, 8.5, 2024, false)
+        )
+        coEvery { repository.getFavourites() }.returns(fakeAnimeList)
         viewModel.loadAnimeList()
         testDispatcher.scheduler.advanceUntilIdle()
 
         assertThat(viewModel.uiState.errorMessage).contains("Network error")
-        assertThat(viewModel.uiState.animeList).isEmpty()
 
-        val fakeAnimeList = listOf(Anime(1, "Anime 1", "url1", 12, 8.5, 2024, false))
-        coEvery { repository.getFavourites() } returns fakeAnimeList
+        assertThat(viewModel.uiState.animeList).isEmpty()
 
         viewModel.onRetry()
         testDispatcher.scheduler.advanceUntilIdle()
-
         assertThat(viewModel.uiState.errorMessage).isNull()
         assertThat(viewModel.uiState.favouriteList).hasSize(1)
         assertThat(viewModel.uiState.favouriteList[0].title).isEqualTo("Anime 1")
+        coVerify(atLeast = 1) {
+            repository.getFavourites()
+        }
     }
+
+
 
     @Test
     fun searchAnime_emptyResult_setsEmptyState() = runTest {
