@@ -35,7 +35,8 @@ class AnimeListViewModel @Inject constructor(
                     favouriteList = favourites,
                     animeList = uiState.animeList.map { anime ->
                         anime.copy(isFavourite = anime.id in favouritesIds)
-                    }
+                    },
+                    errorMessage = null
                 )
             } catch (e: CancellationException) {
                 throw e
@@ -127,7 +128,7 @@ class AnimeListViewModel @Inject constructor(
             }
         }
     }
-    private fun loadAnimeList() {
+    fun loadAnimeList() {
         loadJob?.cancel()
         loadJob = viewModelScope.launch {
             uiState = uiState.copy(
